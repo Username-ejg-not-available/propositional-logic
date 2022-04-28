@@ -1,18 +1,53 @@
-exp := term IFF a
+exp := a IFF a #1
     | a
-a := term IF b
+a := b IF b #2
     | b
-b := term OR c
+b := c OR c #3
     | c
-c := term XOR d
+c := d XOR d #4
     | d
-d := term AND e
+d := e AND e #5
     | e
-e := NOT f
-    | f
-f := EXISTS PROP term
-    | FORALL PROP term
+e := NOT term #6
     | term
 term := LPAREN exp RPAREN
-    | PROP
-    | BOOL
+    | PROP #7
+    | BOOL #8
+
+###
+
+requires {
+    import abstract as ab
+}
+
+#1 {
+    p.semstack = [ab.Iff(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+}
+
+#2 {
+    p.semstack = [ab.If(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+}
+
+#3 {
+    p.semstack = [ab.Or(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+}
+
+#4 {
+    p.semstack = [ab.Xor(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+}
+
+#5 {
+    p.semstack = [ab.And(p.semstack[1], p.semstack[0])] + p.semstack[2:]
+}
+
+#6 {
+    p.semstack = [ab.Not(p.semstack[0])] + p.semstack[1:]
+}
+
+#7 {
+    p.semstack = [ab.makeProp(p.currentToken)] + p.semstack
+}
+
+#8 {
+    p.semstack = [ab.Bool(p.currentToken == "_T")] + p.semstack
+}

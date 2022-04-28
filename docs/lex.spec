@@ -1,14 +1,14 @@
-_(T|F) BOOL true
-_A FORALL false
-_E EXISTS false
-[(] LPAREN false
-[)] RPAREN false
-[a-zA-Z] PROP true
-[&] AND false
-[|] OR false
-^ XOR false
-~ NOT false
--> IF false
-<-> IFF false
+_(T|F) BOOL
+_A FORALL
+_E EXISTS
+\( LPAREN
+\) RPAREN
+[a-zA-Z] PROP
+& AND
+\| OR
+\^ XOR
+~ NOT
+\-> IF
+<\-> IFF
 \_|\t (SKIP)
 . (ERR) "Bad input"

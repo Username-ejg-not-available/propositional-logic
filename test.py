@@ -15,7 +15,7 @@ def genTree(max=5, props=['p','q','r']) -> r.ab.Logic:
     return muhtree(genTree(max-1,props),genTree(max-1,props))
 
 #tree = genTree(3,['a','b','c','d'])
-tree = r.tt.lp.parse.Parser("((b<->b)->c)|((d->a)^(c&b))").parse()
+tree = r.tt.p.Parser("((b<->b)->c)|((d->a)^(c&b))").parse()
 print("Original Exp:",tree.asStr(),"\n\nOriginal Table:")
 r.tt.Table(tree).printTable(True)
 print("")

@@ -5,7 +5,6 @@ props = {}
 class Logic:
     def __init__(self): pass
     def asStr(self,top: bool=True) -> str: pass
-    def hwOut(self,top: bool=True) -> str: pass
     def solve(self, ps) -> bool: pass
     def isSame(self,other) -> bool: pass
     def size(self) -> int: pass
@@ -17,9 +16,6 @@ class And(Logic):
     def asStr(self,top: bool=True) -> str:
         if top: return self.op1.asStr(False) + "&" + self.op2.asStr(False)
         else: return "(" + self.op1.asStr(False) + "&" + self.op2.asStr(False) + ")"
-    def hwOut(self,top: bool = True) -> str:
-        if top: return self.op1.hwOut(False) + "^" + self.op2.hwOut(False)
-        else: return "(" + self.op1.hwOut(False) + "^" + self.op2.hwOut(False) + ")"
     def solve(self, ps) -> bool: 
         s1 = self.op1.solve(ps)
         s2 = self.op2.solve(ps)
@@ -36,9 +32,6 @@ class Or(Logic):
     def asStr(self,top: bool=True) -> str:
         if top: return self.op1.asStr(False) + "|" + self.op2.asStr(False)
         else: return "(" + self.op1.asStr(False) + "|" + self.op2.asStr(False) + ")"
-    def hwOut(self,top: bool = True) -> str:
-        if top: return self.op1.hwOut(False) + "v" + self.op2.hwOut(False)
-        else: return "(" + self.op1.hwOut(False) + "v" + self.op2.hwOut(False) + ")"
     def solve(self, ps) -> bool: 
         s1 = self.op1.solve(ps)
         s2 = self.op2.solve(ps)
@@ -55,9 +48,6 @@ class Xor(Logic):
     def asStr(self,top: bool=True) -> str:
         if top: return self.op1.asStr(False) + "^" + self.op2.asStr(False)
         else: return "(" + self.op1.asStr(False) + "^" + self.op2.asStr(False) + ")"
-    def hwOut(self,top: bool = True) -> str:
-        if top: return self.op1.hwOut(False) + "⊕" + self.op2.hwOut(False)
-        else: return "(" + self.op1.hwOut(False) + "⊕" + self.op2.hwOut(False) + ")"
     def solve(self, ps) -> bool: 
         s1 = self.op1.solve(ps)
         s2 = self.op2.solve(ps)
@@ -73,9 +63,6 @@ class Not(Logic):
     def asStr(self,top:bool=True)->str:
         if top: return "~"+self.op.asStr(False)
         return "(~" + self.op.asStr(False) + ")"
-    def hwOut(self,top:bool=True) -> str:
-        if top: return c.Bars["TOP_RIGHT"]+self.op.hwOut(False)
-        return "(" + c.Bars["TOP_RIGHT"] + self.op.hwOut(False) + ")"
     def solve(self, ps) -> bool: 
         s = self.op.solve(ps)
         return not s
@@ -91,9 +78,6 @@ class If(Logic):
     def asStr(self,top: bool=True) -> str:
         if top: return self.op1.asStr(False) + "->" + self.op2.asStr(False)
         else: return "(" + self.op1.asStr(False) + "->" + self.op2.asStr(False) + ")"
-    def hwOut(self,top: bool = True) -> str:
-        if top: return self.op1.hwOut(False) + "->" + self.op2.hwOut(False)
-        else: return "(" + self.op1.hwOut(False) + "->" + self.op2.hwOut(False) + ")"
     def solve(self, ps) -> bool: 
         s1 = self.op1.solve(ps)
         s2 = self.op2.solve(ps)
@@ -110,9 +94,6 @@ class Iff(Logic):
     def asStr(self,top: bool=True) -> str:
         if top: return self.op1.asStr(False) + "<->" + self.op2.asStr(False)
         else: return "(" + self.op1.asStr(False) + "<->" + self.op2.asStr(False) + ")"
-    def hwOut(self,top: bool = True) -> str:
-        if top: return self.op1.hwOut(False) + "<->" + self.op2.hwOut(False)
-        else: return "(" + self.op1.hwOut(False) + "<->" + self.op2.hwOut(False) + ")"
     def solve(self, ps) -> bool: 
         s1 = self.op1.solve(ps)
         s2 = self.op2.solve(ps)
@@ -127,8 +108,6 @@ class Prop(Logic):
         self.l = letter
     def asStr(self,top:bool=True) -> str:
         return self.l
-    def hwOut(self,top:bool=True) -> str:
-        return self.l
     def solve(self,ps) -> bool:
         return ps[self.l] == 'T'
     def isSame(self,other) -> bool:
@@ -142,9 +121,6 @@ class Bool(Logic):
     def asStr(self,top:bool=True) -> str:
         if self.b: return "_T"
         return "_F"
-    def hwOut(self,top:bool=True) -> str:
-        if self.b: return "True"
-        return "False"
     def solve(self,ps) -> bool:
         return self.b
     def isSame(self,other) -> bool:
@@ -177,8 +153,6 @@ class ForAll(Logic):
         self.op2 = o
     def asStr(self) -> str:
         return "_A"+self.op1.asStr()+"(" + self.op2.asStr() + ")"
-    def hwOut(self) -> str:
-        return "FORALL "+self.op1.asStr()+" (" + self.op2.asStr() + ")"
     def solve(self,ps) -> bool:
         return False
     def isSame(self,other) -> bool:
@@ -192,8 +166,6 @@ class Exists(Logic):
         self.op2 = o
     def asStr(self) -> str:
         return "_E"+self.op1.asStr()+"(" + self.op2.asStr() + ")"
-    def hwOut(self) -> str:
-        return "EXISTS "+self.op1.asStr()+" (" + self.op2.asStr() + ")"
     def solve(self,ps) -> bool:
         return True
     def isSame(self,other) -> bool:

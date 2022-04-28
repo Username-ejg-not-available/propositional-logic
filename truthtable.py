@@ -1,10 +1,10 @@
-import logicparser as lp
+from parser.logicparser import p
 import abstract as ab
 from console import Console
 
 class Table:
     def __init__(self,tree: str,altProps = []):
-        if isinstance(tree,str): self.tree = lp.parse.Parser(tree).parse()
+        if isinstance(tree,str): self.tree = p.Parser(tree).parse()
         else: self.tree = tree
         if altProps != []: self.props = sorted(altProps)
         else: self.props = sorted(ab.getProps(self.tree))
@@ -28,14 +28,14 @@ class Table:
                 case ab.Not(op=x): 
                     r = rec(x,p)
                     r.update({
-                        t.hwOut():list(map(lambda y: str(y),Table(t,p).table))
+                        t.asStr():list(map(lambda y: str(y),Table(t,p).table))
                     })
                     return r
                 case _: 
                     r = rec(t.op1,p)
                     r.update(rec(t.op2,p))
                     r.update({
-                        t.hwOut():list(map(lambda y: str(y),Table(t,p).table))
+                        t.asStr():list(map(lambda y: str(y),Table(t,p).table))
                     })
                     return r
 
@@ -46,7 +46,7 @@ class Table:
                 for y in range(len(r[x])):
                     grid[y+1] += [r[x][y]]
         else:
-            grid[0] += [self.tree.hwOut()]
+            grid[0] += [self.tree.asStr()]
             for x in range(len(self.table)):
                 grid[x+1] += [str(self.table[x])]
         c = Console()
